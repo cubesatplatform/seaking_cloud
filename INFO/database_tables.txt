@@ -1,0 +1,156 @@
+CREATE TABLE coordinates(
+    id uuid DEFAULT uuid_generate_v4 (),
+    lat FLOAT8 NOT NULL,
+    long FLOAT8 NOT NULL,
+    type VARCHAR(50),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT now() ,
+    PRIMARY KEY (id)
+);
+
+-----------------------------------------------------------------------
+	
+CREATE TABLE GPS(
+    gpsid uuid PRIMARY KEY DEFAULT uuid_generate_v4 (),
+  	slid uuid,
+    createdon TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    timestamp BIGINT,
+    lat FLOAT8 DEFAULT 9999.9999,
+    lon FLOAT8 DEFAULT 9999.9999
+    alt FLOAT8 DEFAULT 9999.9999,
+    vel FLOAT8 DEFAULT 9999.9999
+);
+
+-----------------------------------------------------------------------
+
+CREATE TABLE ImageComponent(
+    icid uuid PRIMARY KEY DEFAULT uuid_generate_v4 (),
+    slid uuid,
+    createdon TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    timestamp FLOAT8 DEFAULT 9999.9999,
+    photoid VARCHAR(255) DEFAULT '',
+    offset INTEGER DEFAULT 0,
+    data VARCHAR(255) DEFAULT '',
+);
+
+-----------------------------------------------------------------------
+
+CREATE TABLE SatLog(
+    slid uuid PRIMARY KEY  DEFAULT uuid_generate_v4 (),
+    bid	BIGINT DEFAULT 1,
+    createdon TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    data VARCHAR(255) DEFAULT '',
+    rssi VARCHAR(20) DEFAULT ''.
+    id	BIGINT DEFAULT 1,
+    cid	BIGINT DEFAULT 1
+);
+
+-----------------------------------------------------------------------
+
+CREATE TABLE Temp(
+    tempid uuid PRIMARY KEY DEFAULT uuid_generate_v4 (),
+    slid uuid,
+    createdon TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    timestamp BIGINT,
+    value FLOAT8 DEFAULT 9999.9999
+);
+
+-----------------------------------------------------------------------
+
+CREATE TABLE Power(
+    pid uuid PRIMARY KEY DEFAULT uuid_generate_v4 (),
+    slid uuid,
+    createdon TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    timestamp BIGINT,
+    value FLOAT8 DEFAULT 9999.9999,
+    data VARCHAR(255) DEFAULT ''
+);
+
+-----------------------------------------------------------------------
+
+CREATE TABLE Commands(
+    cid BIGSERIAL PRIMARY KEY,
+    bid	BIGINT DEFAULT 1,
+    createdon TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    sendon TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    data VARCHAR(255) DEFAULT '',
+    sent BOOL DEFAULT false,
+    ack BOOL DEFAULT false
+);
+
+-----------------------------------------------------------------------
+
+CREATE TABLE IRArray(
+    irid uuid PRIMARY KEY DEFAULT uuid_generate_v4 (),
+    slid uuid,
+    createdon TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    timestamp BIGINT,
+    value FLOAT8 DEFAULT 9999.9999,
+    data VARCHAR(255) DEFAULT '',
+    high FLOAT8 DEFAULT 9999.9999,
+    low FLOAT8 DEFAULT 9999.9999,
+    side INT DEFAULT 0
+);
+
+-----------------------------------------------------------------------
+
+CREATE TABLE BaseStation(
+    bid BIGSERIAL PRIMARY KEY,
+    name VARCHAR(100) DEFAULT '',
+    lat	FLOAT8 DEFAULT 9999.9999,
+    lon	FLOAT8 DEFAULT 9999.9999,
+    createdon TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    modifiedon TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    laston	TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    pwd	VARCHAR(10) DEFAULT ''
+);
+
+-----------------------------------------------------------------------
+
+CREATE TABLE ErrorLog(
+    elid uuid PRIMARY KEY DEFAULT uuid_generate_v4 (),
+    bid	BIGINT DEFAULT 1,
+    createdon TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    data VARCHAR(255) DEFAULT '',
+);
+
+-----------------------------------------------------------------------
+
+CREATE TABLE IMU(
+    imuid uuid PRIMARY KEY DEFAULT uuid_generate_v4 (),
+    slid uuid,
+    createdon TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    timestamp BIGINT DEFAULT now(),
+    datatype CHAR(1) DEFAULT '',
+    gyrox FLOAT8 DEFAULT 9999.9999,
+    gyroy FLOAT8 DEFAULT 9999.9999,
+    gyroz FLOAT8 DEFAULT 9999.9999,
+    rotx FLOAT8 DEFAULT 9999.9999,
+    roty FLOAT8 DEFAULT 9999.9999,
+    rotz FLOAT8 DEFAULT 9999.9999,
+    magx FLOAT8 DEFAULT 9999.9999,
+    magy FLOAT8 DEFAULT 9999.9999,
+    magz FLOAT8 DEFAULT 9999.9999,
+    imuts FLOAT8 DEFAULT 9999.9999,
+    classified VARCHAR(255) DEFAULT '',
+    stepcount FLOAT8 DEFAULT 9999.9999,
+    gyroaccu FLOAT8 DEFAULT 9999.9999,
+    rotaccu FLOAT8 DEFAULT 9999.9999,
+    magaccu FLOAT8 DEFAULT 9999.9999,
+    quatx FLOAT8 DEFAULT 9999.9999,
+    quaty FLOAT8 DEFAULT 9999.9999,
+    quatz FLOAT8 DEFAULT 9999.9999,
+    quatr FLOAT8 DEFAULT 9999.9999,
+    quataccu FLOAT8 DEFAULT 9999.9999,
+    accx FLOAT8 DEFAULT 9999.9999,
+    accy FLOAT8 DEFAULT 9999.9999,
+    accz FLOAT8 DEFAULT 9999.9999,
+    accu FLOAT8 DEFAULT 9999.9999,
+    laccx FLOAT8 DEFAULT 9999.9999,
+    laccy FLOAT8 DEFAULT 9999.9999,
+    laccz FLOAT8 DEFAULT 9999.9999,
+    linaccu FLOAT8 DEFAULT 9999.9999,
+    roll FLOAT8 DEFAULT 9999.9999,
+    pitch FLOAT8 DEFAULT 9999.9999,
+    yaw FLOAT8 DEFAULT 9999.9999
+);
+

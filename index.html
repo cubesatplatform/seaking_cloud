@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SeaKing</title>
+    <meta name="description" content="SeaKing" />
+    <!-- <base href="https://seaking-2021101806451795.s3.amazonaws.com/dev/"> -->
+    <!-- <link rel="icon" href="images/favicon.png"> -->
+    <link rel="stylesheet" type="text/css" href="styles/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="styles/bootstrap-grid.css" />
+    <link rel="stylesheet" type="text/css" href="styles/fontawesome.css" />
+    <link rel="stylesheet" type="text/css" href="styles/style.css" />
+
+    <script type="text/javascript" src="scripts/libs/jquery.js"></script>
+    <script type="text/javascript" src="scripts/libs/amcharts/core.js"></script>
+    <script type="text/javascript" src="scripts/libs/amcharts/charts.js"></script>
+    <script type="text/javascript" src="scripts/libs/amcharts/themes/animated.js"></script>
+    <script type="text/javascript" src="scripts/libs/amcharts/themes/dark.js"></script>
+
+    <script type="text/javascript" src="scripts/charts/charts.js"></script>
+
+    <script type="text/javascript" src="scripts/funcs/getBaseStation.js"></script>
+    <script type="text/javascript" src="scripts/funcs/getGPS.js"></script>
+    <script type="text/javascript" src="scripts/funcs/getIMU.js"></script>
+    <script type="text/javascript" src="scripts/funcs/getIR.js"></script>
+    <script type="text/javascript" src="scripts/funcs/getPower.js"></script>
+    <script type="text/javascript" src="scripts/funcs/getSatlog.js"></script>
+    <script type="text/javascript" src="scripts/funcs/getTemp.js"></script>
+
+    <script type="text/javascript" src="scripts/util.js"></script>
+    <script type="text/javascript" src="scripts/init.js"></script>
+    
+  </head>
+
+  <body>
+    
+    <div class="popup-overlay popup-delete-all" id="popup-delete-all">
+      <div class="popup text-center">
+          <i class="fas fa-times popup-close"></i>
+          <div class="pb-4">Are you sure you want to delet all data for <span class="todelete"></span> ? </div>
+          <button class="button button-pink mr-3" onclick="deleteAll();">Delete All</button>
+          <button class="button popup-close">Cancel</button>
+      </div>  
+    </div>
+
+
+    <div class="container-fluid wrapper">
+      <div class="row h-100">
+        <div class="main">
+          <div class="container-fluid">
+            <div class="row row1">
+              <div class="col-8 mx-0 pr-0 row3-container">
+                <div class="box" id="map-container">
+                
+                  <span class="map-box-button"><i class="fas fa-redo-alt" onclick="getMainMap()"></i></span>
+                  <div id="map" class="rounded"></div>
+                </div>
+                <div class="row mt-3 row3">
+                  <div class="col pr-2">
+                    <div class="box">
+                      <div class="box-title">Mission / Countdown Clock<i class="fas fa-redo-alt"></i></div>
+                      <div class="box-content">
+                        <div class="timer">
+                          <div class="label">Countdown</div>
+                          <div class="value">055:55:25</div>
+                        </div>
+                        <div class="row mt-3">
+                          <div class="col">
+                            <div class="label">Distance</div>
+                            <div class="value">245 KM</div>
+                          </div>
+                          <div class="col-8">
+                            <div class="label">Current Speed</div>
+                            <div class="value">25,555 KM/H</div>
+                          </div>
+                        </div>
+                        <div class="row mt-3">
+                          <div class="col">
+                            <div class="label">Sunset in</div>
+                            <div class="value">45 Mins</div>
+                          </div>
+                          <div class="col-8">
+                            <div class="label">Next Transmission in</div>
+                            <div class="value">1 Hour</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- box END-->
+                  </div>
+                  <div class="col px-2">
+                    <div class="box" id="box-sat">
+                      <div class="box-title">
+                        Sat. Trajectory / Location<i class="fas fa-redo-alt" onclick="getGPS()"></i>
+                      </div>
+                      <div class="box-content box-gps" >
+                        <div class="map mt-3 rounded" id="map-sat"></div>
+                        <ul class="list-group list-group-flush list-normal">
+                          <li class="list-group-item listed">
+                            <span class="label">Lat:</span> <span class="value val-lat">-</span>
+                          </li>
+                          <li class="list-group-item listed">
+                            <span class="label">Lon:</span> <span class="value val-lon">-</span>
+                          </li>
+                          <li class="list-group-item listed">
+                            <span class="label">Alt:</span> <span class="value val-alt">256,000M</span>
+                          </li>
+                          <li class="list-group-item listed">
+                            <span class="label">Velocity:</span> <span class="value val-vel">25,555KM/H</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <!-- box END-->
+                  </div>
+
+                  <div class="col pl-2">
+                    <div class="box box-bstation" id="box-station">
+                      <div class="box-title ">
+                        Groundstation Gateway<i class="fas fa-redo-alt" onclick="getBaseStation()"></i>
+                      </div>
+                      <div class="box-content">
+                        <div class="map mt-3 rounded" id="map-station"></div>
+                        <div class="row mt-3">
+                          <!-- <div class="col pr-2 text-center">
+                            <i class="fas fa-satellite-dish icon-satellite"></i>
+                          </div> -->
+                          <div class="col">
+
+
+                            <ul class="list-group list-group-flush list-normal">
+                              <li class="list-group-item listed">
+                                <span class="label">Name:</span> <span class="value val-name">-</span>
+                              </li>
+                              <li class="list-group-item listed">
+                                <span class="label">Lat:</span> <span class="value val-lat">-</span>
+                              </li>
+                              <li class="list-group-item listed">
+                                <span class="label">Lon:</span> <span class="value val-lon">-</span>
+                              </li>
+                              <li class="list-group-item listed">
+                                <span class="label">Last Seen:</span> <span class="value val-laston">-</span>
+                              </li>
+                             
+                            </ul>
+
+                            
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- box END-->
+                  </div>
+                </div>
+              </div>
+              <div class="col pr-0 col-graphs">
+                <div class="box" id="box-sgraphs">
+                  <div class="box-title">Sensor Graphs
+                    <select class="sensor-select">
+                      <option value="gyro">Gyro</option>
+                      <option value="rot">Rotation</option>
+                      <option value="mag">Magnet</option>
+                      <option value="quat">Quaternion</option>
+                      <option value="acc">Accuracy</option>
+                      <option value="lacc">Linear Accuracy</option>
+                      <option value="rpy">Roll | Pitch | Yaw</option>
+                      <option value="gps">Velocity | Altitude</option>
+                      <option value="temp">Temprature</option>
+                    </select>
+                    <i class="fas fa-redo-alt" onclick="reloadChart()"></i>
+                  </div>
+                  <div class="box-content">
+                    <div id="chart-1"></div>
+
+                    <div class="row mt-3">
+                      <div class="col pr-0">
+                        <div class="chart" id="chart-2"></div>
+                      </div>
+                      <div class="col-7 pl-0">
+                        <div class="chart" id="chart-3"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- box END-->
+
+                <div class="box" id="box-sdetails">
+                  <!-- <div class="box-title">Sensor Detail<i class="fas fa-redo-alt" onclick="reloadSensors()"></i></div> -->
+                  <div class="box-content">
+                    
+                   
+                    <div class="row">
+                      <div class="col">
+                        <div class="box-title mb-0">Power</div>
+                        <div class="chart" id="chart-power"></div>
+                      </div>
+
+                      <div class="col">
+                        <div class="box-title mb-0">Temp</div>
+                        <div class="chart" id="chart-temp"></div>
+                      </div>
+                    </div>
+                    
+                    <div class="row pt-5">
+                      
+                      <div class="col list-inertia col-inertia">
+                        <div class="box-title">Inertia / Magento</div>
+                        <ul class="list-group list-group-flush list-normal">
+                          <li class="list-group-item listed">
+                            <span class="label">Accel:</span> <span class="value val-acc">6g</span>
+                          </li>
+                          <li class="list-group-item listed">
+                            <span class="label">Velocity:</span> <span class="value val-vel">5</span>
+                          </li>
+                          <li class="list-group-item listed">
+                            <span class="label">Heading:</span> <span class="value val-heading">50</span>
+                          </li>
+                          <li class="list-group-item listed">
+                            <span class="label">RSSI:</span> <span class="value val-rssi">-</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- box END-->
+              </div>
+            </div>
+
+            <!-- <div class="row clear row2">
+              <div class="col mx-0 px-0">
+                <div class="box box-launch">
+                  <div class="box-title">
+                    <span class="label">Launch : </span>
+                    <span class="value">SAT 01</span>
+                    <i class="fas fa-redo-alt" onclick="reloadTimeline()"></i>
+                  </div>
+                  <div class="box-content">
+                    <div class="chart" id="chart-timeline"></div>
+                  </div>
+                </div>
+              
+              </div>
+            </div>
+             -->
+          </div>
+        </div>
+        <div class="aside">
+          <div class="logo">
+            SeaKing
+            <span>Space</span>
+          </div>
+
+          <div class="box">
+            <!-- <div class="box-title">Tweets</div> -->
+            <div class="box-content">
+              <!-- <textarea class="textarea" rows="1" id="messagebox" name=""></textarea> -->
+              <div class="px-3 row row-irarray">
+                  <div class="col irarray irarray-5">
+                    <div class="label">Top 5</div>
+                    <div class="data"></div>
+                  </div>
+
+                  <div class="col irarray irarray-6">
+                    <div class="label">Bottom 6</div>
+                    <div class="data"></div>
+                  </div>
+
+                  <div class="col irarray irarray-1">
+                    <div class="label">Side 1</div>
+                    <div class="data"></div>
+                  </div>
+
+                  <div class="col irarray irarray-2">
+                    <div class="label">Side 2</div>
+                    <div class="data"></div>
+                  </div>
+
+                  <div class="col irarray irarray-3">
+                    <div class="label">Side 3</div>
+                    <div class="data"></div>
+                  </div>
+
+                  <div class="col irarray irarray-4">
+                    <div class="label">Side 4</div>
+                    <div class="data"></div>
+                  </div>
+
+                
+              </div>
+              <!-- <input type="text" class="robert" placeholder=""/>
+              <button class="button robert-button" >process</button>
+              <div class=robert-text></div> -->
+              <div class="row row-commands">
+                <div class="col col col-active">
+                  Satlog
+                </div>
+                <div class="col col">
+                  Commands
+                </div>
+                <div class="col col">
+                  ErrorLog
+                </div>
+
+                <div class="col col">
+                  Image
+                </div>
+              </div>
+              <div class="row messagebox-container px-2">
+                <div class="col">
+                <div class="row row-messagebox row-messagebox-satlog">
+                  <input type="text" class="messagebox col" placeholder=""/>
+                </div>
+                <div class="row row-messagebox row-messagebox-commands">
+                  <input type="text" class="messagebox col" placeholder="SYS:[SYSTEM]~ACT:[ACTION]"/>
+                  
+                </div>
+
+                <div class="row row-messagebox row-messagebox-errorlog">
+                  <input type="text" class="messagebox col" placeholder="error log"/>
+                </div>
+
+                <div class="row row-messagebox row-messagebox-image">
+                  <input type="text" class="messagebox col" placeholder="image data"/>
+                  
+                </div>
+                </div>
+                <div class="col-2 px-0">
+                  <button class="button button-send-command" onclick="sendCommand();">Send</button>
+                </div>
+                
+              </div>
+              
+              <div class="row ">
+                <div class="col text-left px-0">
+                  <div class="ticons ticons-satlog">
+
+                    <i class="fas fa-magnet" title="IMU"  alt="data=table:imu~gyrox:9999.9999~gyroy:9999.9999~gyroz:9999.9999~rotx:9999.9999~roty:9999.9999~rotz:9999.9999~magx:9999.9999~magy:9999.9999~magz:9999.9999&bid=1&rssi=0"></i>
+                    <i class="fas fa-map-pin" title="GPS" alt="data=table:gps~lat:9999.9999~lon:9999.9999~alt:9999.9999~vel:9999.9999&bid=1&rssi=0"></i>
+                    <i class="fas fa-thermometer-half" title="TEMP" alt="data=table:temp~value:9999.9999&bid=1&rssi=0"></i>
+                    <i class="t-wifi" title="IRARRAY"  alt="data=table:irarray~value:9999.9999~high:9999.9999~low:9999.9999~side:0~data:aaa&bid=1&rssi=0"></i>
+                    <i class="fas fa-bolt" title="POWER" alt="data=table:power~value:9999.9999~data:aaa&bid=1&rssi=0"></i>
+                    <i class="fas fa-image" title="IMAGE" alt="data=table:imagecomponent~data:aaa~photoid:aaa~offset:0"></i>
+
+                  </div>
+
+
+                  <div class="ticons ticons-commands">
+                    <i class="fas fa-clock" rel="SYS:TIME~ACT:[ACTION]" alt="bid=[bigint]&rssi=[text]&data=[table:gps~lat:[float]~lon:[float]]"></i>
+                    <i class="fas fa-map-pin" rel="SYS:GPS~ACT:[ACTION]" alt="bid=[bigint]&rssi=[text]&data=[table:gps~lat:[float]~lon:[float]]"></i>
+                    <i class="fas fa-magnet" rel="SYS:MAGNET~ACT:[ACTION]" alt="bid=[bigint]&rssi=[text]&data=[table:gps~lat:[float]~lon:[float]]"></i>
+                    <i class="fas fa-camera" rel="SYS:PHOTO~ACT:[ACTION]" alt="bid=[bigint]&rssi=[text]&data=[table:gps~lat:[float]~lon:[float]]"></i>
+                    <i class="fas fa-heartbeat" rel="SYS:HEALTH~ACT:[ACTION]" alt="bid=[bigint]&rssi=[text]&data=[table:gps~lat:[float]~lon:[float]]"></i>
+                    <i class="fas fa-sync-alt" rel="SYS:TROTATE~ACT:[ACTION]" alt="bid=[bigint]&rssi=[text]&data=[table:gps~lat:[float]~lon:[float]]"></i>
+                    <i class="fas fa-envelope" rel="SYS:SEND~ACT:[ACTION]" alt="bid=[bigint]&rssi=[text]&data=[table:gps~lat:[float]~lon:[float]]"></i>
+                    <i class="t-wifi" rel="SYS:IRARRAY~ACT:[ACTION]" alt="bid=[bigint]&rssi=[text]&data=[table:gps~lat:[float]~lon:[float]]"></i>
+                  </div>
+
+                </div>
+
+                
+                <div class="col-2 text-right">
+                 
+
+                    <!-- <div class="col px-0"><button class="button button-send-command" onclick="sendCommand()~">Send</button></div> -->
+                    <i class="far fa-trash-alt button-delete-all" onclick="popup('#popup-delete-all')"></i>
+                  
+                </div>
+              </div>
+
+
+            </div>
+            <!-- box END-->
+
+            <div class="box-content box-commands">
+              <div class="imgcomp-preview"></div>
+
+              <ul class="list-group list-group-flush list-normal list-chat" id="list-commands">
+                <!-- 
+					  <li class="list-group-item listed"><span class="label">23:14:02</span> <span class="value">Eiusmod tempor incididunt</span></li>
+					  <li class="list-group-item listed"><span class="label">23:14:02</span> <span class="value">Lorem ipsum dolor</span></li>
+					  <li class="list-group-item listed"><span class="label">23:14:02</span> <span class="value">Amet sed do eiusmod</span></li> -->
+              </ul>
+              <div class="list-loader">
+                <div class="list-count mb-3">Currenty showing <span>0</span> records</div>
+                <a href="#" class="button">Load more</a>
+              </div>
+            </div>
+            <!-- box END-->
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMJbuDyv-d7jdjryzmF3MurpzgQmUmbFM&callback=initMap"
+    ></script>
+  </body>
+</html>

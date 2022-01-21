@@ -1,0 +1,55 @@
+[{
+  "x": 1,
+  "y": 1,
+  "text": "Start up",
+  "center": "top"
+}, {
+  "x": 2,
+  "y": 1,
+  "text": "Liftoff",
+  "center": "bottom"
+}, {
+  "x": 4,
+  "y": 1,
+  "text": "Main Engine Cutoff",
+  "center": "top"
+}, {
+  "x": 7,
+  "y": 1,
+  "text": "[bold]Stage 1[/]\nEntry Burn",
+  "center": "bottom"
+}, {
+  "x": 8,
+  "y": 1,
+  "text": "[bold]Second Stage[/]\nEngine Cutoff",
+  "center": "top"
+}, {
+  "x": 8.5,
+  "y": 1,
+  "text": "[bold]Stage 1[/]\nLanding",
+  "center": "bottom"
+}, {
+  "x": 20,
+  "y": 1,
+  "text": "[bold]Second Stage[/]\nEngine Startup 2",
+  "center": "top"
+ 
+}, {
+  "x": 22,
+  "y": 1,
+  "text": "[bold]Second Stage[/]\nEngine Cutoff",
+  "center": "bottom"
+ 
+}, {
+  "x": 27,
+  "y": 1,
+  "text": "Deploy",
+  "center": "top"
+ 
+}, {
+  "x": 29,
+  "y": 1,
+  "text": "Deploy",
+  "center": "bottom"
+
+}]
